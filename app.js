@@ -73,7 +73,7 @@ function mainMenu(person, people) {
             //! TODO #2: Declare a findPersonFamily function //////////////////////////////////////////
             // HINT: Look for a people-collection stringifier utility function to help
             let personFamily = findPersonFamily(person[0], people);
-            alert(personFamily);
+            // alert(personFamily);
             break;
         case "descendants":
             //! TODO #3: Declare a findPersonDescendants function //////////////////////////////////////////
@@ -152,6 +152,7 @@ function displayPerson(person) {
 // End of displayPerson()
 
 function findPersonFamily(person, people){
+    // Does not return relation to person
     let familyArray = []
 
     // Find Spouse
@@ -164,8 +165,10 @@ function findPersonFamily(person, people){
             return false;
         }
     })
-    familyArray.push(spouse[0]);
-    
+    if (spouseId != null){
+        familyArray.push(spouse[0]);
+    } 
+
     // Find Parent(s)
     let parents = person.parents;
     let parentObjects = people.filter(function(el){
@@ -181,7 +184,6 @@ function findPersonFamily(person, people){
     }
 
     // Find Sibling(s)
-    // siblings works but also includes the person searched for
     let parentIds = []
     for(let i=0; i < parentObjects.length; i++){
         parentIds.push(parentObjects[i].id);
@@ -198,6 +200,13 @@ function findPersonFamily(person, people){
             return false;
         }
     })
+    for (let j=0; j<siblings.length; j++){
+        if (siblings[j] != person) {
+            familyArray.push(siblings[j]);
+        }
+    }
+
+
     let displayNames = displayPeople(familyArray);
 }
 
