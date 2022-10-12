@@ -79,7 +79,7 @@ function mainMenu(person, people) {
             //! TODO #3: Declare a findPersonDescendants function //////////////////////////////////////////
             // HINT: Review recursion lecture + demo for bonus user story
             let personDescendants = findPersonDescendants(person[0], people);
-            alert(personDescendants);
+            // alert(personDescendants);
             break;
         case "restart":
             // Restart app() from the very beginning
@@ -151,7 +151,7 @@ function displayPerson(person) {
 }
 // End of displayPerson()
 
-function findPersonFamily(person, people){
+function findPersonFamily(person, people) {
     // Does not return relation to person
     let familyArray = []
 
@@ -209,6 +209,43 @@ function findPersonFamily(person, people){
 
     let displayNames = displayPeople(familyArray);
 }
+// End of findPersonFamily()
+
+function findPersonDescendants(person, people) {
+
+    // person (if parent) --> find child --> if child is parent --> find child --> etc
+    let listOfDesc = [];
+    // Children of parent
+    let child = people.filter(function(el){
+        if (el.parents.includes(person.id)) {
+            return true;
+        } else {
+            return false;
+        }
+    })
+    for (let i = 0; i<child.length;i++){
+        listOfDesc.push(child[i]);
+    }
+
+    // children of child
+    for (let i = 0; i <listOfDesc.length; i++){
+        let grandchild = people.filter(function(el){
+            if (el.parents.includes(listOfDesc[i].id)) {
+                return true;
+            } else {
+                return false;
+            }
+        })
+        return grandchild;
+    }
+
+for (let i = 0; i < grandchild.length; i++){
+    listOfDesc.push(grandchild[i]);
+}
+    let displayDescendants = displayPeople(listOfDesc);
+
+}
+// End of findPersonDescendants()
 
 /**
  * This function's purpose is twofold:
