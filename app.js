@@ -228,15 +228,15 @@ function findPersonDescendants(person, people) {
     }
 
     // children of child
+    let grandchild;
     for (let i = 0; i <listOfDesc.length; i++){
-        let grandchild = people.filter(function(el){
+        grandchild = people.filter(function(el){
             if (el.parents.includes(listOfDesc[i].id)) {
                 return true;
             } else {
                 return false;
             }
         })
-        return grandchild;
     }
 
 for (let i = 0; i < grandchild.length; i++){
