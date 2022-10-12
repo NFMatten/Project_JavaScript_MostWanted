@@ -288,5 +288,82 @@ for (let i = 0; i < grandchild.length; i++){
 }
 // End of findPersonDescendants()
 
-function searchByTraits
+function searchByTraits(people){
+    let howManyTraits = prompt("Would you like to search for a single or multiple traits?");
+    switch(howManyTraits) {
+        case "single":
+            let single = singleTraitSearch(people);
+            break;
+        case "multiple":
+            let multiple = multipleTraitsSearch(people);
+            break;
+    }
+}
+
+function singleTraitSearch(people){
+    let singleTrait = prompt("Please enter a trait to search for.");
+    let userInput;
+    let results;
+    switch(singleTrait) {
+        case "gender":
+            userInput = prompt("Please enter a gender to search for.");
+            results = people.filter(function(el){
+                if (el.gender === userInput.toLowerCase()){
+                    return true;
+                } else {
+                    return false;
+                }
+            })
+            let displayGenderResults = displayPeople(results);
+            break;
+        case "height":
+            userInput = prompt("Please enter a height to search for.");
+            results = people.filter(function(el){
+                if (el.height === userInput.toLowerCase()){
+                    return true;
+                } else {
+                    return false;
+                }
+            })
+            let displayHeightResults = displayPeople(results);
+            break;
+        case "weight":
+            userInput = prompt("Please enter a weight to search for.");
+            results = people.filter(function(el){
+                if (el.weight === userInput.toLowerCase()){
+                    return true;
+                } else {
+                    return false;
+                }
+            })
+            let displayWeightResults = displayPeople(results);
+            break;
+        case "eye color":
+            userInput = prompt("Please enter an eye color to search for.");
+            results = people.filter(function(el){
+                if (el.eyeColor === userInput.toLowerCase()){
+                    return true;
+                } else {
+                    return false;
+                }
+            })
+            let displayEyeColorResults = displayPeople(results);
+            break;
+        case "occupation":
+            userInput = prompt("Please enter an occupation to search for.");
+            results = people.filter(function(el){
+                if (el.occupation === userInput.toLowerCase()){
+                    return true;
+                } else {
+                    return false;
+                }
+            })
+            let displayOccupationResults = displayPeople(results);
+            break;
+    }
+}
+
+function multipleTraitsSearch(people){
+
+}
 
