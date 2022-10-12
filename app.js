@@ -141,17 +141,21 @@ function displayPerson(person) {
     let personInfo = `First Name: ${person.firstName}\n`;
     personInfo += `Last Name: ${person.lastName}\n`;
     personInfo += `Gender: ${person.gender}\n`;
-    personInfo += 
-    personInfo 
+    personInfo += `DOB: ${person.dob}\n`;
+    personInfo += `Height: ${person.height}\n`;
+    personInfo += `Weight: ${person.weight}\n`;
+    personInfo += `Eye Color: ${person.eyeColor}\n`;
+    personInfo += `Occupation: ${person.occupation}\n`;
     //! TODO #1a: finish getting the rest of the information to display //////////////////////////////////////////
-    alert(personInfo);
+    return personInfo;
 }
 // End of displayPerson()
 
 function findPersonFamily(person, people){
     let familyArray = []
-    let spouseId = person.currentSpouse;
 
+    // Find Spouse
+    let spouseId = person.currentSpouse;
     let spouse = people.filter(function(el){
         if(spouseId === el.id){
             return true;
@@ -160,10 +164,10 @@ function findPersonFamily(person, people){
             return false;
         }
     })
-    familyArray.push(spouse[0])
+    familyArray.push(spouse[0]);
     
+    // Find Parent(s)
     let parents = person.parents;
-
     let parentObjects = people.filter(function(el){
         if(parents.includes(el.id)){
             return true;
@@ -173,26 +177,28 @@ function findPersonFamily(person, people){
         }
     })
     for(let i=0; i < parentObjects.length; i++){
-    familyArray.push(parentObjects[i])
+        familyArray.push(parentObjects[i]);
     }
 
+    // Find Sibling(s)
+    // siblings works but also includes the person searched for
     let parentIds = []
     for(let i=0; i < parentObjects.length; i++){
-        parentIds.push(parentObjects[i].id)
+        parentIds.push(parentObjects[i].id);
     }
-// siblings works but also includes the person searched for
+
     let siblings = people.filter(function(el){
-        if(!el.parents){
+        if (!el.parents){
             return false;
         }
-        else if(el.parents.includes(parentIds[0])|| el.parents.includes(parentIds[1])){
+        else if (el.parents.includes(parentIds[0])|| el.parents.includes(parentIds[1])) {
             return true;
         }
-        else{
+        else {
             return false;
         }
     })
-    let displayNames = displayPeople(familyArray)
+    let displayNames = displayPeople(familyArray);
 }
 
 /**
