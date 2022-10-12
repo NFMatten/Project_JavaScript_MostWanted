@@ -141,15 +141,44 @@ function displayPerson(person) {
     let personInfo = `First Name: ${person.firstName}\n`;
     personInfo += `Last Name: ${person.lastName}\n`;
     personInfo += `Gender: ${person.gender}\n`;
-    personInfo += `DOB: ${person.dob}\n`;
-    personInfo += `Height: ${person.height}\n`;
-    personInfo += `Weight: ${person.weight}\n`;
-    personInfo += `Eye Color: ${person.eyeColor}\n`;
-    personInfo += `Occupation: ${person.occupation}\n`;
+    personInfo += 
+    personInfo 
     //! TODO #1a: finish getting the rest of the information to display //////////////////////////////////////////
     alert(personInfo);
 }
 // End of displayPerson()
+
+function findPersonFamily(person, people){
+    let familyArray = []
+    let spouseId = person.currentSpouse;
+
+    let spouse = people.filter(function(el){
+        if(spouseId === el.id){
+            return true;
+        }
+        else{
+            return false;
+        }
+    })
+    familyArray.push(spouse[0])
+    
+    let parents = person.parents;
+
+    let parentObjects = people.filter(function(el){
+        if(parents.includes(el.id)){
+            return true;
+        }
+        else{
+            return false;
+        }
+    })
+    for(let i=0; i < parentObjects.length; i++){
+    familyArray.push(parentObjects[i])
+    }
+
+    
+    let displayNames = displayPeople(familyArray)
+}
 
 /**
  * This function's purpose is twofold:
