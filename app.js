@@ -176,7 +176,22 @@ function findPersonFamily(person, people){
     familyArray.push(parentObjects[i])
     }
 
-    
+    let parentIds = []
+    for(let i=0; i < parentObjects.length; i++){
+        parentIds.push(parentObjects[i].id)
+    }
+// siblings works but also includes the person searched for
+    let siblings = people.filter(function(el){
+        if(!el.parents){
+            return false;
+        }
+        else if(el.parents.includes(parentIds[0])|| el.parents.includes(parentIds[1])){
+            return true;
+        }
+        else{
+            return false;
+        }
+    })
     let displayNames = displayPeople(familyArray)
 }
 
