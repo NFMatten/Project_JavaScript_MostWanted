@@ -302,20 +302,20 @@ function searchByTraits(people){
 
 function singleTraitSearch(people){
     let singleTrait = prompt("Please enter a trait to search for.");
-    let userInput;
     let results;
+    let displayResults;
     switch(singleTrait) {
         case "first name":
-            results = searchFirstName(people);
-            let displayFirstName = displayPeople(results);
+            results = searchForStringValue(people, "first name");
+            displayResults = displayPeople(results)
             break;
         case "last name":
-            results = searchLastName(people);
-            let displayLastName = displayPeople(results);
+            results = searchForStringValue(people, "last name");
+            displayResults = displayPeople(results)
             break;
         case "gender":
-            results = searchGender(people);
-            let displayGenderResults = displayPeople(results);
+            results = searchForStringValue(people, "gender");
+            displayResults = displayPeople(results)
             break;
         case "date of birth":
             results = searchDOB(people);
@@ -330,18 +330,13 @@ function singleTraitSearch(people){
             let displayWeightResults = displayPeople(results);
             break;
         case "eye color":
-            results = searchEyeColor(people);
-            let displayEyeColorResults = displayPeople(results);
+            results = searchForStringValue(people, "eye color");
+            displayResults = displayPeople(results)
             break;
         case "occupation":
-            results = searchOccupation(people);
-            let displayOccupationResults = displayPeople(results);
+            results = searchForStringValue(people, "occupation");
+            displayResults = displayPeople(results)
             break;
-        case "string" :
-            results = searchForString(people, "gender");
-            let displayResults = displayPeople(results)
-            break;
-        
     }
 }
 
@@ -438,106 +433,10 @@ function searchPrompt(trait){
     return userInput;
 }
 
-function searchFirstName(people) {
-    let inputFirstName = searchPrompt("first name");
-    let results = people.filter(function(el){
-        if (el.firstName === inputFirstName){
-            return true;
-        } else {
-            return false;
-        }
-    })
-    return results;
-}
-
-function searchLastName(people){
-    let inputLastName = searchPrompt("last name");
-    let results = people.filter(function(el){
-        if (el.lastName === inputLastName){
-            return true;
-        } else {
-            return false;
-        }
-    })
-    return results;
-}
-
-function searchGender(people){
-    let inputGender = searchPrompt("gender");
-    let results = people.filter(function(el){
-        if (el.gender === inputGender){
-            return true;
-        } else {
-            return false;
-        }
-    })
-    return results;
-}
-
-function searchDOB(people){
-    let inputDOB = searchPrompt("date of birth");
-    let results = people.filter(function(el){
-        if (el.dob === inputDOB){
-            return true;
-        } else {
-            return false;
-        }
-    })
-    return results;
-}
-
-function searchHeight(people){
-    let inputHeight = searchPrompt("height");
-    let results = people.filter(function(el){
-        if (el.height === parseInt(inputHeight)){
-            return true;
-        } else {
-            return false;
-        }
-    })
-    return results;
-}
-
-function searchWeight(people){
-    let inputWeight = searchPrompt("weight");
-    let results = people.filter(function(el){
-        if (el.weight === parseInt(inputWeight)){
-            return true;
-        } else {
-            return false;
-        }
-    })
-    return results;
-}
-
-function searchEyeColor(people){
-    let inputEyeColor = searchPrompt("eye color");
-    let results = people.filter(function(el){
-        if (el.eyeColor === inputEyeColor){
-            return true;
-        } else {
-            return false;
-        }
-    })
-    return results;
-}
-
-function searchOccupation(people){
-    let inputOccupation = searchPrompt("occupation");
-    let results = people.filter(function(el){
-        if (el.occupation === inputOccupation){
-            return true;
-        } else {
-            return false;
-        }
-    })
-    return results;
-}
-
-function searchForString(people, trait){
+function searchForStringValue(people, trait){
     let inputTrait = searchPrompt(trait);
     let results = people.filter(function(el){
-        if (el.trait === inputTrait) {
+        if (el[trait] === inputTrait) {
             return true;
         } else {
             return false;
@@ -546,10 +445,10 @@ function searchForString(people, trait){
     return results;
 }
 
-function searchForInt(people, trait){
+function searchForIntValue(people, trait){
     let inputTrait = searchPrompt(trait);
     let results = people.filter(function(el){
-        if (el.trait === parseInt(inputTrait)){
+        if (el[trait] === parseInt(inputTrait)){
             return true;
         } else {
             return false;
@@ -557,8 +456,3 @@ function searchForInt(people, trait){
     })
     return results;
 }
-
-// case "gender" :
-//             results = searchForString(people, "gender");
-//             let displayResults = displayPeople(results)
-//             break;
