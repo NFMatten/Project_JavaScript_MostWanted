@@ -191,11 +191,17 @@ function chars(input) {
 //////////////////////////////////////////* End Of Starter Code *//////////////////////////////////////////
 // Any additional functions can be written below this line 👇. Happy Coding! 😁
 
-function findPersonFamily(person, people) {
-    // Does not return relation to person
-    let familyArray = []
 
-    // Find Spouse
+function findPersonFamily(person, people){
+    let familyArray = [];
+    familyArray.push(findParents(person, people), findSpouse(person, people), findSiblings(person, people),);
+    let flattenedFamilyArray = familyArray.flat();
+    let displayNames = displayPeople(flattenedFamilyArray);
+}
+// end findPersonFamily()
+
+function findSpouse(person, people){
+    let familyArray = [];
     let spouseId = person.currentSpouse;
     let spouse = people.filter(function(el){
         if(spouseId === el.id){
@@ -208,8 +214,12 @@ function findPersonFamily(person, people) {
     if (spouseId != null){
         familyArray.push(spouse[0]);
     } 
+    return familyArray;
+}
+//end findSpouse()
 
-    // Find Parent(s)
+function findParents(person, people){
+    let familyArray = [];
     let parents = person.parents;
     let parentObjects = people.filter(function(el){
         if(parents.includes(el.id)){
@@ -222,9 +232,15 @@ function findPersonFamily(person, people) {
     for(let i=0; i < parentObjects.length; i++){
         familyArray.push(parentObjects[i]);
     }
+    return familyArray;
+}
+// end findParents()
 
-    // Find Sibling(s)
-    let parentIds = []
+function findSiblings(person, people){
+    let familyArray = [];
+    let parentIds = [];
+    let parentObjects = findParents(person, people);
+
     for(let i=0; i < parentObjects.length; i++){
         parentIds.push(parentObjects[i].id);
     }
@@ -245,15 +261,12 @@ function findPersonFamily(person, people) {
             familyArray.push(siblings[j]);
         }
     }
-
-
-    let displayNames = displayPeople(familyArray);
+    return familyArray;
 }
-// End of findPersonFamily()
+// end findSiblings()
+    // end finding family members functions
 
 function findPersonDescendants(person, people) {
-
-    // person (if parent) --> find child --> if child is parent --> find child --> etc
     let listOfDesc = [];
     // Children of parent
     let child = people.filter(function(el){
@@ -288,10 +301,10 @@ for (let i = 0; i < grandchild.length; i++){
 // End of findPersonDescendants()
 
 function singleTraitSearch(data){
-    let singleTrait = prompt("Please enter a trait to search for or type 'done'.");
-    if (singleTrait != 'done'){
-        let inputTrait = searchPrompt(singleTrait);
-        data = searchForValue(data, singleTrait, inputTrait)
+    let traitType = prompt("Please enter a trait type to search for or type 'done'.");
+    if (traitType != 'done'){
+        let inputTrait = searchPrompt(traitType);
+        data = searchForValue(data, keyValidator(traitType), inputTrait)
         displayPeople(data);
         if(data.length > 1){
             return singleTraitSearch(data);
@@ -301,19 +314,48 @@ function singleTraitSearch(data){
         return;
     }
 }
+// end singleTraitDescendants()
 
-// Single responsibility - Single Trait //
+
 function searchPrompt(trait){
-    let traitToArray = trait.split(/(?=[A-Z])/);
-    let arrayToLowerCase = traitToArray.map(name => name.toLowerCase());
-    let arrayToString = ""; 
-    for (let i = 0; i<arrayToLowerCase.length; i++){
-        arrayToString += (arrayToLowerCase[i] + " "); 
-    }
-    let userInput = prompt(`Please enter ${arrayToString} to search for.`);
+    // let traitToArray = trait.split(/(?=[A-Z])/);
+    // let arrayToLowerCase = traitToArray.map(name => name.toLowerCase());
+    // let arrayToString = ""; 
+    // for (let i = 0; i<arrayToLowerCase.length; i++){
+    //     arrayToString += (arrayToLowerCase[i] + " "); 
+    // }
+    let userInput = prompt(`Please enter ${trait} to search for.`);
     return userInput;
 }
+// end searchPrompt()
 
+function keyValidator(inputtedTraitType){
+    let secondWord;
+    let wordCapitalized;
+    let key = "";
+    let wordToLower = inputtedTraitType.toLowerCase();
+    let inputToArray = wordToLower.split(" ");
+
+    if (inputToArray.length > 1){
+        secondWord = inputToArray.pop();
+        wordCapitalized = secondWord.charAt(0).toUpperCase() + secondWord.slice(1)
+        inputToArray.push(wordCapitalized);
+        }
+
+    for (let i=0;i<inputToArray.length;i++){
+        key += inputToArray[i]
+    }
+    return key;
+}
+
+/**
+ * This function determines if user input is only numbers or not. If numbers, parse int to find key value.
+ * If numberTest = false, keeps user input as string
+ * @param {*} people - data list
+ * @param {*} trait - object key name
+ * @param {*} traitName - object value
+ * @returns filtered results based on user input
+ */
 function searchForValue(people, trait, traitName){
     let numberTest = /^\d+$/.test(traitName);
     let valueToSearch;
@@ -333,3 +375,4 @@ function searchForValue(people, trait, traitName){
     })
     return results;
 }
+// end searchForValue()
