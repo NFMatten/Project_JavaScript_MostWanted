@@ -302,18 +302,14 @@ function searchByTraits(data, people){
 }
 
 function singleTraitSearch(data, people){
-    while(data.length > 1){
-        let singleTrait = prompt("Please enter a trait to search for.");
-        let results;
-        let inputTrait = searchPrompt(singleTrait);
-        results = searchForValue(data, singleTrait, inputTrait)
-        data = results;
-        displayPeople(data);
-        singleTraitSearch(data);
+    let singleTrait = prompt("Please enter a trait to search for.");
+    let inputTrait = searchPrompt(singleTrait);
+    data = searchForValue(data, singleTrait, inputTrait)
+    displayPeople(data);
+    if(data.length > 1){
+        return singleTraitSearch(data, people);
     }
-    let finalData = data
-    return finalData;
-
+    return data;
 }
 
 function multipleTraitsSearch(people){
