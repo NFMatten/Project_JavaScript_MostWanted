@@ -30,9 +30,7 @@ function app(people) {
             break;
         case "no":
             let data = people
-            //! TODO #4: Declare a searchByTraits (multiple traits) function //////////////////////////////////////////
-                //! TODO #4a: Provide option to search for single or multiple //////////////////////////////////////////
-            searchResults = searchByTraits(data, people);
+            searchResults = singleTraitSearch(data);
             break;
         default:
             // Re-initializes the app() if neither case was hit above. This is an instance of recursion.
@@ -289,29 +287,22 @@ for (let i = 0; i < grandchild.length; i++){
 }
 // End of findPersonDescendants()
 
-function searchByTraits(data, people){
-    let howManyTraits = prompt("Would you like to search for a single or multiple traits?");
-    switch(howManyTraits) {
-        case "single":
-            let single = singleTraitSearch(data, people);
-            break;
-        case "multiple":
-            let multiple = multipleTraitsSearch(people);
-            break;
+function singleTraitSearch(data){
+    let singleTrait = prompt("Please enter a trait to search for or type 'done'.");
+    if (singleTrait != 'done'){
+        let inputTrait = searchPrompt(singleTrait);
+        data = searchForValue(data, singleTrait, inputTrait)
+        displayPeople(data);
+        if(data.length > 1){
+            return singleTraitSearch(data);
+        }
+        return data;
+    } else {
+        return;
     }
 }
 
-function singleTraitSearch(data, people){
-    let singleTrait = prompt("Please enter a trait to search for.");
-    let inputTrait = searchPrompt(singleTrait);
-    data = searchForValue(data, singleTrait, inputTrait)
-    displayPeople(data);
-    if(data.length > 1){
-        return singleTraitSearch(data, people);
-    }
-    return data;
-}
-
+// get rid
 function multipleTraitsSearch(people){
     let traits = prompt("Please enter traits to search for.").split(", ");
     let results;
