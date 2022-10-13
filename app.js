@@ -318,16 +318,16 @@ function singleTraitSearch(people){
             displayResults = displayPeople(results)
             break;
         case "date of birth":
-            results = searchDOB(people);
-            let displayDOB = displayPeople(results);
+            results = searchForStringValue(people, "date of birth");
+            displayResults = displayPeople(results);
             break;
         case "height":
-            results = searchHeight(people);
-            let displayHeightResults = displayPeople(results);
+            results = searchForIntValue(people, "height");
+            displayResults = displayPeople(results);
             break;
         case "weight":
-            results = searchWeight(people);
-            let displayWeightResults = displayPeople(results);
+            results = searchForIntValue(people, "weight");
+            displayResults = displayPeople(results);
             break;
         case "eye color":
             results = searchForStringValue(people, "eye color");
