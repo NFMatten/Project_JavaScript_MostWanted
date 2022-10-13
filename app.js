@@ -29,9 +29,10 @@ function app(people) {
             searchResults = searchByName(people);
             break;
         case "no":
+            let data = people
             //! TODO #4: Declare a searchByTraits (multiple traits) function //////////////////////////////////////////
                 //! TODO #4a: Provide option to search for single or multiple //////////////////////////////////////////
-            searchResults = searchByTraits(people);
+            searchResults = searchByTraits(data, people);
             break;
         default:
             // Re-initializes the app() if neither case was hit above. This is an instance of recursion.
@@ -288,11 +289,11 @@ for (let i = 0; i < grandchild.length; i++){
 }
 // End of findPersonDescendants()
 
-function searchByTraits(people){
+function searchByTraits(data, people){
     let howManyTraits = prompt("Would you like to search for a single or multiple traits?");
     switch(howManyTraits) {
         case "single":
-            let single = singleTraitSearch(people);
+            let single = singleTraitSearch(data, people);
             break;
         case "multiple":
             let multiple = multipleTraitsSearch(people);
@@ -300,44 +301,19 @@ function searchByTraits(people){
     }
 }
 
-function singleTraitSearch(people){
-    let singleTrait = prompt("Please enter a trait to search for.");
-    let results;
-    let displayResults;
-    switch(singleTrait) {
-        case "first name":
-            results = searchForStringValue(people, "first name");
-            displayResults = displayPeople(results)
-            break;
-        case "last name":
-            results = searchForStringValue(people, "last name");
-            displayResults = displayPeople(results)
-            break;
-        case "gender":
-            results = searchForStringValue(people, "gender");
-            displayResults = displayPeople(results)
-            break;
-        case "date of birth":
-            results = searchDOB(people);
-            let displayDOB = displayPeople(results);
-            break;
-        case "height":
-            results = searchHeight(people);
-            let displayHeightResults = displayPeople(results);
-            break;
-        case "weight":
-            results = searchWeight(people);
-            let displayWeightResults = displayPeople(results);
-            break;
-        case "eye color":
-            results = searchForStringValue(people, "eye color");
-            displayResults = displayPeople(results)
-            break;
-        case "occupation":
-            results = searchForStringValue(people, "occupation");
-            displayResults = displayPeople(results)
-            break;
+function singleTraitSearch(data, people){
+    while(data.length > 1){
+        let singleTrait = prompt("Please enter a trait to search for.");
+        let results;
+        let inputTrait = searchPrompt(singleTrait);
+        results = searchForValue(data, singleTrait, inputTrait)
+        data = results;
+        displayPeople(data);
+        singleTraitSearch(data);
     }
+    let finalData = data
+    return finalData;
+
 }
 
 function multipleTraitsSearch(people){
@@ -429,26 +405,28 @@ function multipleTraitsSearch(people){
 
 // Single responsibility - Single Trait //
 function searchPrompt(trait){
-    let userInput = prompt(`Please enter ${trait} to search for.`);
+    let traitToArray = trait.split(/(?=[A-Z])/);
+    let arrayToLowerCase = traitToArray.map(name => name.toLowerCase());
+    let arrayToString = ""; 
+    for (let i = 0; i<arrayToLowerCase.length; i++){
+        arrayToString += (arrayToLowerCase[i] + " "); 
+    }
+    let userInput = prompt(`Please enter ${arrayToString} to search for.`);
     return userInput;
 }
 
-function searchForStringValue(people, trait){
-    let inputTrait = searchPrompt(trait);
-    let results = people.filter(function(el){
-        if (el[trait] === inputTrait) {
-            return true;
-        } else {
-            return false;
-        }
-    })
-    return results;
-}
+function searchForValue(people, trait, traitName){
+    let numberTest = /^\d+$/.test(traitName);
+    let valueToSearch;
 
-function searchForIntValue(people, trait){
-    let inputTrait = searchPrompt(trait);
+    if (numberTest == true) {
+        valueToSearch = parseInt(traitName);
+    } else {
+        valueToSearch = traitName;
+    }
+
     let results = people.filter(function(el){
-        if (el[trait] === parseInt(inputTrait)){
+        if (el[trait] === valueToSearch){
             return true;
         } else {
             return false;
