@@ -301,10 +301,13 @@ for (let i = 0; i < grandchild.length; i++){
 // End of findPersonDescendants()
 
 function singleTraitSearch(data){
-    let traitType = prompt("Please enter a trait type to search for or type 'done'.");
+    let traitType = null;
+    while ((traitType === null) || (traitType === "")){
+    traitType = searchPrompt("trait type");
+    }
     if (traitType != 'done'){
         let inputTrait = searchPrompt(traitType);
-        data = searchForValue(data, keyValidator(traitType), inputTrait)
+        data = searchForValue(data, toKeyTerm(traitType), inputTrait)
         displayPeople(data);
         if(data.length > 1){
             return singleTraitSearch(data);
@@ -318,18 +321,15 @@ function singleTraitSearch(data){
 
 
 function searchPrompt(trait){
-    // let traitToArray = trait.split(/(?=[A-Z])/);
-    // let arrayToLowerCase = traitToArray.map(name => name.toLowerCase());
-    // let arrayToString = ""; 
-    // for (let i = 0; i<arrayToLowerCase.length; i++){
-    //     arrayToString += (arrayToLowerCase[i] + " "); 
-    // }
+    if (trait === null){
+        return; // terminate program
+    }
     let userInput = prompt(`Please enter ${trait} to search for.`);
     return userInput;
 }
 // end searchPrompt()
 
-function keyValidator(inputtedTraitType){
+function toKeyTerm(inputtedTraitType){
     let secondWord;
     let wordCapitalized;
     let key = "";
