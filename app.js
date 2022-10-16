@@ -191,7 +191,11 @@ function chars(input) {
 //////////////////////////////////////////* End Of Starter Code *//////////////////////////////////////////
 // Any additional functions can be written below this line 👇. Happy Coding! 😁
 
-
+/**
+ * Purpose: To find entire immediate family members of person being searched.
+ * @param {*} person -- object
+ * @param {*} people -- dictionary
+ */
 function findPersonFamily(person, people){
     let familyArray = [];
     familyArray.push(findParents(person, people), findSpouse(person, people), findSiblings(person, people),);
@@ -200,6 +204,12 @@ function findPersonFamily(person, people){
 }
 // end findPersonFamily()
 
+/**
+ * Purpose: To find the spouse of person being searched.
+ * @param {*} person -- object
+ * @param {*} people -- dictionary
+ * @returns 
+ */
 function findSpouse(person, people){
     let familyArray = [];
     let spouseId = person.currentSpouse;
@@ -218,6 +228,12 @@ function findSpouse(person, people){
 }
 //end findSpouse()
 
+/**
+ * Purpose: To find parents of person being searched.
+ * @param {*} person -- object
+ * @param {*} people -- dictionary
+ * @returns 
+ */
 function findParents(person, people){
     let familyArray = [];
     let parents = person.parents;
@@ -236,6 +252,12 @@ function findParents(person, people){
 }
 // end findParents()
 
+/**
+ * Purpose: To find siblings of person being searched.
+ * @param {*} person -- object
+ * @param {*} people -- dictionary
+ * @returns 
+ */
 function findSiblings(person, people){
     let familyArray = [];
     let parentIds = [];
@@ -266,6 +288,11 @@ function findSiblings(person, people){
 // end findSiblings()
     // end finding family members functions
 
+/**
+ * Purpose: To find grandchildren of person, if any.
+ * @param {*} person -- object
+ * @param {*} people -- dictionary
+ */
 function findPersonDescendants(person, people) {
     let listOfDesc = [];
     // Children of parent
@@ -300,26 +327,47 @@ for (let i = 0; i < grandchild.length; i++){
 }
 // End of findPersonDescendants()
 
+/**
+ * Purpose: Search the data list by way of user input. First, collects 'trait type' to search for. Second, collects 'trait' to search for.
+ *          If all user input valid, begins search.
+ * @param {*} data -- list of objects
+ * @returns 
+ */
 function singleTraitSearch(data){
     let traitType = null;
-    while ((traitType === null) || (traitType === "")){
-    traitType = searchPrompt("trait type");
-    }
-    if (traitType != 'done'){
-        let inputTrait = searchPrompt(traitType);
-        data = searchForValue(data, toKeyTerm(traitType), inputTrait)
-        displayPeople(data);
-        if(data.length > 1){
-            return singleTraitSearch(data);
+    let keyValidCheck = false;
+    while (keyValidCheck === false){
+        while ((traitType === null) || (traitType === "")){
+        traitType = searchPrompt("trait type");
         }
-        return data;
-    } else {
-        return;
+        if (traitType != 'done'){
+            let keyTerm = toKeyTerm(traitType);
+            keyValidCheck = isValidKey(keyTerm, data);
+            if (keyValidCheck === true){
+                let inputTrait = searchPrompt(traitType);
+                data = searchForValue(data, toKeyTerm(traitType), inputTrait)
+                displayPeople(data);
+                if(data.length > 1){
+                    return singleTraitSearch(data);
+                }
+                return data;
+            } else {
+                alert(`${traitType} is an invalid trait type, please try again.`);
+                traitType = null;
+            }
+        
+        } else {
+            return;
+        }
     }
 }
 // end singleTraitDescendants()
 
-
+/**
+ * Purpose: To gain user input by prompting user what to search for.
+ * @param {*} trait -- string
+ * @returns 
+ */
 function searchPrompt(trait){
     if (trait === null){
         return; // terminate program
@@ -329,6 +377,12 @@ function searchPrompt(trait){
 }
 // end searchPrompt()
 
+/**
+ * Purpose: To take in user input, convert to style of object's key name
+ *          i.e. 'eye color' --> 'eyeColor'
+ * @param {*} inputtedTraitType -- user input
+ * @returns 
+ */
 function toKeyTerm(inputtedTraitType){
     let secondWord;
     let wordCapitalized;
@@ -347,10 +401,12 @@ function toKeyTerm(inputtedTraitType){
     }
     return key;
 }
+// end toKeyTerm()
 
 /**
- * This function determines if user input is only numbers or not. If numbers, parse int to find key value.
- * If numberTest = false, keeps user input as string
+ * Purpose: Takes in user input, determines if it's all numbers (i.e. height or weight) or characters.
+ *          Then parses input to INT if needed, or keeps as string.
+ *          Finally, filters data list to find and match the key's value.
  * @param {*} people - data list
  * @param {*} trait - object key name
  * @param {*} traitName - object value
@@ -376,3 +432,19 @@ function searchForValue(people, trait, traitName){
     return results;
 }
 // end searchForValue()
+
+/**
+ * Purpose: To validate user input to ensure it matches the object's key name
+ * @param {*} keyTerm -- user input
+ * @param {*} people -- data list
+ * @returns 
+ */
+function isValidKey(keyTerm, people){
+    let keys = Object.keys(people[0]);
+    if (keys.includes(keyTerm)){
+        return true;
+    } else {
+        return false;
+    }
+}
+// end isValidKey()
